@@ -23,15 +23,6 @@
         app:srcCompat="@drawable/ic_settings_bluetooth_black_24dp" />
 
     <Button
-        android:text="B_OFF"
-        android:id="@+id/b_off"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/b_on"
-        app:layout_constraintTop_toBottomOf="@+id/b_on" />
-
-    <Button
         android:text="B_Gallery"
         android:id="@+id/b_gallery"
         android:layout_width="150dp"
@@ -63,6 +54,6 @@
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/b_off" />
+        app:layout_constraintTop_toBottomOf="@+id/b_refresh" />
 
 </android.support.constraint.ConstraintLayout>

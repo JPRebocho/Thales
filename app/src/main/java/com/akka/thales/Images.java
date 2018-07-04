@@ -76,7 +76,7 @@ public class Images extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode == RESULT_OK) {
-            if ((requestCode == IMAGE_GALLERY_REQUEST) || (requestCode == EXPLORER_REQUEST)) {
+            if (requestCode == IMAGE_GALLERY_REQUEST) {
 
                 //the address of the image on the SD Card
                 Uri imageUri = data.getData();
@@ -84,12 +84,6 @@ public class Images extends AppCompatActivity {
                 //declare a stream to read the image data from the SD Card
                 InputStream inputStream;
 
-/*
-                File imgfile = new File(data.getData().getPath());
-
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgfile.getAbsolutePath());
-                imageView.setImageBitmap(myBitmap);
-*/
 
                 //we are getting an input stream based on the URI of the image
                 try {
@@ -106,6 +100,9 @@ public class Images extends AppCompatActivity {
                     e.printStackTrace();
                     Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
                 }
+            }
+            if (requestCode == EXPLORER_REQUEST) {
+
             }
         }
     }
