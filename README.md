@@ -1,5 +1,10 @@
 # Thales
 
+## Bugs
+*Gallery* error when picking an image. *Photos* and *Explorer* work fine.
+Its not about permissions, its how the image is returned from the *Gallery* intent (the sketchy path that the emulator uses on the computer) need to try on a real device.
+
+## To Do List
 - [x] Add option to use the device's file explorer to open any kind of file.
 - [x] Hide Image View frame when there is nothing to show.
 
