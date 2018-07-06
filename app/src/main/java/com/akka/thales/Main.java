@@ -24,31 +24,29 @@ public class Main extends AppCompatActivity {
     //refresh button animation
     Animation animation = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 
-
     Button b_gallery;
     ImageButton b_on, b_refresh;
-
     ListView list;
     BluetoothAdapter bluetoothAdapter;
 
 
-    private static final int REQUEST_ENABLED = 0;
-    private static final int REQUEST_DISCOVERABLE = 0;
+    private static final int REQUEST_BLUETOOTH_ON = 10;
+    private static final int REQUEST_PAIR_DEVICE = 20;
+    private static final int REQUEST_DISCOVERABLE = 30;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         Toast.makeText(getApplicationContext(), "BLUETOOTH INTENT CREATED", Toast.LENGTH_SHORT).show();
         //refresh button animation
         animation.setRepeatCount(-1);
         animation.setDuration(2000);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         b_on = findViewById(R.id.b_on);
-        b_gallery = findViewById(R.id.b_gallery);
+        b_gallery = findViewById(R.id.b_image);
         b_refresh = findViewById(R.id.b_refresh);
         list = findViewById(R.id.list);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -60,8 +58,7 @@ public class Main extends AppCompatActivity {
                 if (!bluetoothAdapter.isEnabled()) {
                     //turn on bluetooth
                     Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(intent, REQUEST_ENABLED);
-                    b_refresh.callOnClick();
+                    startActivityForResult(intent, REQUEST_BLUETOOTH_ON);
                 }
                 else {
                     bluetoothAdapter.disable();
@@ -77,7 +74,7 @@ public class Main extends AppCompatActivity {
             @Override
             public boolean onLongClick(View view) {
                 Intent settings = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
-                startActivity(settings);
+                startActivityForResult(settings, REQUEST_PAIR_DEVICE);
                 return true;
             }
         });
@@ -97,22 +94,10 @@ public class Main extends AppCompatActivity {
             public void onClick(View view) {
                 b_refresh.startAnimation(animation);
                 //list paired devices
-                Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+                showListofPairedDevices();
 
-                ArrayList<String> devices = new ArrayList<>();
 
-                for (BluetoothDevice bt : pairedDevices){
-                    devices.add(bt.getName());
-                }
-
-                ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, devices);
-
-                bluetoothAdapter.startDiscovery();
-
-                list.setAdapter(arrayAdapter);
-
-                Toast.makeText(getApplicationContext(), "BLUETOOTH LIST PRESSED", Toast.LENGTH_SHORT).show();
-//                b_refresh.clearAnimation();
+    //          b_refresh.clearAnimation();
             }
         });
 
@@ -123,4 +108,42 @@ public class Main extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode){
+                case REQUEST_BLUETOOTH_ON:
+                    b_refresh.callOnClick();
+                    break;
+                case REQUEST_PAIR_DEVICE:
+                    Toast.makeText(getApplicationContext(), "DONT SHOW THIS-> ", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "the data received-> " + data.toString(), Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
+        }
+    }
+
+
+    protected void showListofPairedDevices(){
+        //clear the list
+        list.setAdapter(null);
+
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        ArrayList<String> devices = new ArrayList<>();
+
+        for (BluetoothDevice bt : pairedDevices){
+            devices.add(bt.getName());
+        }
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, devices);
+
+//        bluetoothAdapter.startDiscovery();
+
+        list.setAdapter(arrayAdapter);
+
+    }
+
+
 }

@@ -19,9 +19,9 @@ import java.io.InputStream;
 
 public class Images extends AppCompatActivity {
 
-    public static final int IMAGE_GALLERY_REQUEST = 20;
+    public static final int IMAGE_REQUEST = 20;
     public static final int EXPLORER_REQUEST = 10;
-    Button b_explorer, b_gallery;
+    Button b_explorer, b_image, b_gallery;
     ImageView imageView;
 
     @Override
@@ -31,7 +31,9 @@ public class Images extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_images);
 
+
         b_explorer = findViewById(R.id.b_explorer);
+        b_image = findViewById(R.id.b_image);
         b_gallery = findViewById(R.id.b_gallery);
         imageView = findViewById(R.id.imageView);
 
@@ -46,37 +48,27 @@ public class Images extends AppCompatActivity {
             }
         });
 
-        b_gallery.setOnClickListener(new View.OnClickListener() {
+        b_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //invoke image gallery
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-
-                //where to find the data
-                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                String pictureDirectoryPath = pictureDirectory.getPath();
-
-
-                //get a URI representation
-                Uri data = Uri.parse(pictureDirectoryPath);
-
-                //set data and type. Gets all image types
-                photoPickerIntent.setDataAndType(data, "image/*");
-
-
-                startActivityForResult(photoPickerIntent, IMAGE_GALLERY_REQUEST);
-
+                openImageFromGallery();
             }
         });
 
+        b_gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent galleryIntent = new Intent(getApplicationContext(), Gallery.class);
+                startActivity(galleryIntent);
+            }
+        });
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode == RESULT_OK) {
-            if (requestCode == IMAGE_GALLERY_REQUEST) {
+            if (requestCode == IMAGE_REQUEST) {
 
                 //the address of the image on the SD Card
                 Uri imageUri = data.getData();
@@ -105,5 +97,25 @@ public class Images extends AppCompatActivity {
 
             }
         }
+    }
+
+    protected void openImageFromGallery(){
+        //invoke image gallery
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+
+        //where to find the data
+        File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String pictureDirectoryPath = pictureDirectory.getPath();
+
+        Log.d("PATH", "picture path-> " + pictureDirectoryPath);
+
+        //get a URI representation
+        Uri data = Uri.parse(pictureDirectoryPath);
+
+        //set data and type. Gets all image types
+        photoPickerIntent.setDataAndType(data, "image/*");
+
+
+        startActivityForResult(photoPickerIntent, IMAGE_REQUEST);
     }
 }

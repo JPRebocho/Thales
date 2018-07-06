@@ -13,18 +13,29 @@
         android:id="@+id/b_explorer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="105dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <Button
-        android:text="Gallery"
-        android:id="@+id/b_gallery"
+        android:text="Open Image"
+        android:id="@+id/b_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toEndOf="@+id/b_explorer"
         app:layout_constraintTop_toTopOf="@+id/b_explorer"
+        />
+
+    <Button
+        android:text="Open Gallery"
+        android:id="@+id/b_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@+id/b_image"
+        app:layout_constraintTop_toTopOf="@+id/b_image"
         />
 
     <ImageView

@@ -5,28 +5,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Thales">
+    tools:context=".Gallery">
 
 
     <Button
-        android:text="GO TO MAIN WINDOW"
-        android:id="@+id/b_gotomainwindow"
+        android:text="Show Gallery"
+        android:id="@+id/b_showgallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="296dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:text="LOADING SCREEN"
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
-        app:layout_constraintBottom_toTopOf="@+id/b_gotomainwindow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
+    <GridView
+        android:id="@+id/gv_folder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:numColumns="2"
+        app:layout_constraintTop_toBottomOf="@id/b_showgallery">
+    </GridView>
 
 </android.support.constraint.ConstraintLayout>
