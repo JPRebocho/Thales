@@ -2,9 +2,12 @@ package com.akka.thales;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.media.MediaScannerConnection;
 import android.media.MediaScannerConnection.MediaScannerConnectionClient;
@@ -19,37 +22,43 @@ import java.io.File;
 
 public class Gallery extends AppCompatActivity{
 // TEST PATHS:
+
+
+    String DEVICE_ID = "123";
+    String SCAN_PATH = Environment.getExternalStorageDirectory().getPath() + "/DCIM";     //path with all devices folders
 //    String SCAN_PATH = "/storage/sdcard1/MIUI/Gallery/cloud/.thumbnailFile/";      //CATS
 //    String SCAN_PATH = "/storage/sdcard1/DCIM/Camera/";          //ALL CAMERA
-    String SCAN_PATH = "/media/external/images/media/";      //SCREENSHOTS
+//    String SCAN_PATH = "/media/external/images/media/";      //SCREENSHOTS
 
     public static final int FOLDER_REQUEST = 10;
 
     File[] allFiles;
 
-    Button b_showgallery;
+    Button b_gallery;
     GridView gridView;
 
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-//        File folder = new File(Environment.getExternalStorageDirectory().getPath()+"/aaaa/");
-//        file:///storage/sdcard1/DCIM/Camera/
         File folder = new File(SCAN_PATH);
-        Log.d("PATH", "PATH -> " + folder);
+        Log.d("PATH", "PATH -> " + folder.getAbsolutePath());
         allFiles = folder.listFiles();
 
-        b_showgallery = findViewById(R.id.b_showgallery);
         gridView = findViewById(R.id.gv_folder);
+        b_gallery = findViewById(R.id.b_gallery);
 
-        b_showgallery.setOnClickListener(new View.OnClickListener() {
+
+        b_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                performFileSearch();
-//                new SingleMediaScanner(Gallery.this, allFiles[0]);
+                createDialog();
+//            performFileSearch();
+//            new SingleMediaScanner(Gallery.this, allFiles[0]);
             }
         });
 
@@ -59,7 +68,9 @@ public class Gallery extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode == RESULT_OK) {
             if (requestCode == FOLDER_REQUEST) {
-                Log.d("FOLDER SEARCH", "SEARCHED FOR FOLDER");
+                Uri uri = data.getData();
+                Uri folderUri = DocumentsContract.buildChildDocumentsUriUsingTree(uri, DocumentsContract.getDocumentId(uri));
+                Log.d("FOLDER SEARCH", "SEARCHED FOR FOLDER-> " + folderUri.getPath());
             }
         }
     }
@@ -94,9 +105,22 @@ public class Gallery extends AppCompatActivity{
             intent.setData(uri);
             startActivity(intent);
             mMs.disconnect();
+
         }
 
 
+    }
+
+    public void createDialog (){
+        AlertDialog.Builder deviceDialog = new AlertDialog.Builder(Gallery.this);
+        deviceDialog.setTitle("Select a Device:");
+        deviceDialog.setItems(R.array.devices, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                DEVICE_ID = getResources().getStringArray(R.array.devices)[i];
+            }
+        });
+        deviceDialog.show();
     }
 
 }

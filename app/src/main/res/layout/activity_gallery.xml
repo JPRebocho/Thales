@@ -9,8 +9,8 @@
 
 
     <Button
-        android:text="Show Gallery"
-        android:id="@+id/b_showgallery"
+        android:text="Change Device"
+        android:id="@+id/b_gallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         android:numColumns="2"
-        app:layout_constraintTop_toBottomOf="@id/b_showgallery">
+        app:layout_constraintTop_toBottomOf="@id/b_gallery">
     </GridView>
 
 </android.support.constraint.ConstraintLayout>
